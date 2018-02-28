@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+
+# dependencies
+/node_modules
+
+# local secrets
+local.js
