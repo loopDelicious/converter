@@ -1,0 +1,25 @@
+{
+  "name": "converter",
+  "version": "1.0.0",
+  "description": "Convert local Swagger 2.0 file to Postman 2.0, and then update Postman collection using Postman API",
+  "main": "converter.js",
+  "dependencies": {
+    "eslint": "^4.18.1",
+    "request": "^2.83.0",
+    "swagger2-postman2-converter": "^0.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loopDelicious/converter.git"
+  },
+  "author": "joyce",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loopDelicious/converter/issues"
+  },
+  "homepage": "https://github.com/loopDelicious/converter#readme"
+}
