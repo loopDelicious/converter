@@ -1,3 +1,5 @@
+// TODO: once converter is published, remove local files
+
 var fs = require('fs'),
     Converter = require('swagger2-postman2-converter'),
     request = require('request'),
