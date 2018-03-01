@@ -1,4 +1,4 @@
-var local = require('./secrets.js');
+var secret = require('./secrets.js');
 
 module.exports = {
     "collections": [
@@ -10,5 +10,5 @@ module.exports = {
             "collection_id": "81f30228-c4e1-8a05-948a-da9cc9bd07db"
         }
     ],
-    "key": local.key
+    "key": secret.key
 };

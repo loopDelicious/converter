@@ -29,48 +29,43 @@ function handleConversion() {
 
 }
 
-function updateLocalCollection(newFileName, newFile, callback) {
+function updateLocalCollection(newFileName, newFile) {
 
     // update the local Postman collection file
-    fs.writeFile('./' + newFileName, JSON.stringify(newFile, null, 2), function (err) {
-        if (err) return console.log(err);
-        console.log('writing to ' + newFileName);
-        callback();
-    });
+    fs.writeFileSync('./' + newFileName, JSON.stringify(newFile, null, 2));
+    console.log('writing to ' + newFileName);
 
 }
 
 function updatePostman(newFileName, collection_uid) {
 
     // read the updated local file and update the Postman collection using Postman API
-    fs.readFile('./' + newFileName, 'utf8', function (err, data) {
-        if (err) throw new Error(err);
+    var data = fs.readFileSync('./' + newFileName, 'utf8');
 
-        // Postman users can get a Postman API key here: https://app.getpostman.com/dashboard/integrations
-        var postmanAPIKey = config.key;
+    // Postman users can get a Postman API key here: https://app.getpostman.com/dashboard/integrations
+    var postmanAPIKey = config.key;
 
-        // compile PUT request to update the Postman collection
-        var putOptions = {
-            method: 'PUT',
-            url: 'https://api.getpostman.com/collections/' + collection_uid,
-            qs: {
-                format: '2.1.0'
-            },
-            headers: {
-                'Postman-Token': '4122abb3-6098-6906-e172-49334961f595',
-                'Cache-Control': 'no-cache',
-                'X-Api-Key': postmanAPIKey,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.parse(data),
-            json: true
-        };
+    // compile PUT request to update the Postman collection
+    var putOptions = {
+        method: 'PUT',
+        url: 'https://api.getpostman.com/collections/' + collection_uid,
+        qs: {
+            format: '2.1.0'
+        },
+        headers: {
+            'Postman-Token': '4122abb3-6098-6906-e172-49334961f595',
+            'Cache-Control': 'no-cache',
+            'X-Api-Key': postmanAPIKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.parse(data),
+        json: true
+    };
 
-        // submit PUT request to update the Postman collection
-        request(putOptions, function (error, response, body) {
-            if (error) throw new Error(error);
-            console.log(body);
-        });
+    // submit PUT request to update the Postman collection
+    request(putOptions, function (error, response, body) {
+        if (error) throw new Error(error);
+        console.log(body);
     });
 
 }
@@ -78,28 +73,24 @@ function updatePostman(newFileName, collection_uid) {
 function updateCollection() {
 
     // update the Postman collection locally and in the cloud
-    fs.readFile('./' + newFileName, 'utf8', function(err, data) {
-        if (err) throw new Error(err);
+    var data = fs.readFileSync('./' + newFileName, 'utf8');
 
-        // search the config for the collection in the read file
-        var file = JSON.parse(data);
-        var coll = config.collections.find( function (coll) {
-            return coll.to === newFileName.split('.')[0];
-        });
-
-        // update properties in file, and determine collection uid
-        file.info.id = coll.collection_id; // update id according to config file
-        file.info._postman_id = file.info.id; // add new property that is identical to id
-        var newFile = {};
-        newFile.collection = file; // wrap JSON object in new "collection" property
-
-        // call function to update the local collection file
-        // and then call function to update the cloud version of the Postman collection using Postman API
-        updateLocalCollection(newFileName, newFile, function(err) {
-            if (err) throw new Error(err);
-            updatePostman(newFileName, coll.collection_uid);
-        });
+    // search the config for the collection in the read file
+    var file = JSON.parse(data);
+    var coll = config.collections.find( function (coll) {
+        return coll.to === newFileName.split('.')[0];
     });
+
+    // update properties in file, and determine collection uid
+    file.info.id = coll.collection_id; // update id according to config file
+    file.info._postman_id = file.info.id; // add new property that is identical to id
+    var newFile = {};
+    newFile.collection = file; // wrap JSON object in new "collection" property
+
+    // call function to update the local collection file
+    // and then call function to update the cloud version of the Postman collection using Postman API
+    updateLocalCollection(newFileName, newFile);
+    updatePostman(newFileName, coll.collection_uid);
 
 }
 
