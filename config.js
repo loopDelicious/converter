@@ -1,4 +1,4 @@
-var local = require('./local.js');
+var local = require('./secrets.js');
 
 module.exports = {
     "collections": [
@@ -11,4 +11,4 @@ module.exports = {
         }
     ],
     "key": local.key
-}
+};

@@ -1,14 +1,17 @@
-// TODO: once converter is published, remove local files
-
 var fs = require('fs'),
     Converter = require('swagger2-postman2-converter'),
     request = require('request'),
     config = require('./config.js');
 
-// the `originalFileName` and `newFileName` corresponds to a sample collection listed in '.config.js'
+// `originalFileName` and `newFileName` corresponds to a sample collection listed in './config.js'
 // this example converts and updates a single collection, but you could update the code to handle multiple collection updates
 var originalFileName = "swagger.json";
 var newFileName = "postman-collection.json";
+
+
+// ###############################################
+// define functions to handle conversion and update collection
+
 
 function handleConversion() {
 
@@ -90,7 +93,8 @@ function updateCollection() {
         var newFile = {};
         newFile.collection = file; // wrap JSON object in new "collection" property
 
-        // update the local collection file, and then update the cloud version of the Postman collection using Postman API
+        // call function to update the local collection file
+        // and then call function to update the cloud version of the Postman collection using Postman API
         updateLocalCollection(newFileName, newFile, function(err) {
             if (err) throw new Error(err);
             updatePostman(newFileName, coll.collection_uid);
@@ -98,6 +102,11 @@ function updateCollection() {
     });
 
 }
+
+
+// ###############################################
+// call functions to handle conversion and update collection
+
 
 handleConversion();
 updateCollection();
