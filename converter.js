@@ -3,17 +3,12 @@ var fs = require('fs'),
     request = require('request'),
     config = require('./config.js');
 
-// `originalFileName` and `newFileName` corresponds to a sample collection listed in './config.js'
-// this example converts and updates a single collection, but you could update the code to handle multiple collection updates
-var originalFileName = "swagger.json";
-var newFileName = "postman-collection.json";
-
 
 // ###############################################
 // define functions to handle conversion and update collection
 
 
-function handleConversion() {
+function handleConversion(originalFileName, newFileName) {
 
     // read the local swagger file
     var swaggerObject = JSON.parse(
@@ -70,7 +65,7 @@ function updatePostman(newFileName, collection_uid) {
 
 }
 
-function updateCollection() {
+function updateCollection(newFileName) {
 
     // update the Postman collection locally and in the cloud
     var data = fs.readFileSync('./' + newFileName, 'utf8');
@@ -96,8 +91,15 @@ function updateCollection() {
 
 
 // ###############################################
-// call functions to handle conversion and update collection
+// loop through collections in config file to call functions to handle conversion and update collection
 
 
-handleConversion();
-updateCollection();
+config.collections.forEach( function (collection) {
+
+    var originalFileName = collection.from + ".json";
+    var newFileName = collection.to + ".json";
+
+    handleConversion(originalFileName, newFileName);
+    updateCollection(newFileName);
+
+});
