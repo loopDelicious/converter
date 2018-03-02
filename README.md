@@ -13,6 +13,12 @@ module.exports = {
    };
 ```
 * To update an existing collection, retrieve the `collection_uid` and `collection_id` by submitting a [`GET` request using the Postman API](https://docs.api.getpostman.com/#3190c896-4216-a0a3-aa38-a041d0c2eb72). Use this information to update the relevant sections of the `config.js` file.
+* Clone this repository.
+
+From the command line:
+
+    $ git clone https://github.com/loopDelicious/converter.git
+
 * Install your dependencies. 
 
 
